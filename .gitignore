@@ -9,6 +9,9 @@ __pycache__/
 # Pycharm files
 .idea/
 
+# Actual files, not relevant to the code
+Mangas/
+
 # Distribution / packaging
 .Python
 env/
