@@ -32,7 +32,6 @@ class Comic:
 
     def get_next_image(self):
         self.current_page_index += 1
-        print(self.current_page_index, len(self.all_pages))
         if self.current_page_index == len(self.all_pages):
             raise EndOfComicException()
         return self.get_current_image()

@@ -47,4 +47,5 @@ class Series:
             self.next_comic = self.current_comic
             self.current_comic_index -= 1
             self.update_current_comic()
+            self.current_comic.current_page_index = len(self.current_comic.all_pages) - 1
             return self.current_comic.get_last_page()
