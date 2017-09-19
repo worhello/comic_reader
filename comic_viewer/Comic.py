@@ -2,6 +2,14 @@ from Page import Page
 import os
 
 
+class EndOfComicException(Exception):
+    pass
+
+
+class BeforeStartOfComicException(Exception):
+    pass
+
+
 class Comic:
     def __init__(self, comic_name):
         self.current_page_index = 0
@@ -11,8 +19,10 @@ class Comic:
         ]
 
     def get_first_page(self):
-        self.current_page_index = 0
-        return self.get_current_image()
+        return self.get_page(0)
+
+    def get_last_page(self):
+        return self.get_page(-1)
 
     def get_current_image(self):
         return self.get_page(self.current_page_index)
@@ -22,8 +32,13 @@ class Comic:
 
     def get_next_image(self):
         self.current_page_index += 1
+        print(self.current_page_index, len(self.all_pages))
+        if self.current_page_index == len(self.all_pages):
+            raise EndOfComicException()
         return self.get_current_image()
 
     def get_previous_image(self):
         self.current_page_index -= 1
+        if self.current_page_index < 0:
+            raise BeforeStartOfComicException()
         return self.get_current_image()
