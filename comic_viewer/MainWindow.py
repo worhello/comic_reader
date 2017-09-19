@@ -1,6 +1,8 @@
 import os
-from tkinter import Button, Label
+from tkinter import Label
 from PIL import ImageTk, Image
+
+from Series import Series
 
 
 class MainWindow:
@@ -10,17 +12,31 @@ class MainWindow:
         self.window_root.title("Comic Viewer")
         self.window_root.geometry("800x600")
 
-        self.greet_button = Button(self.window_root, text="Greet", command=self.greet)
-        self.greet_button.pack()
+        root_directory = "Mangas"
+        comic_name = "Pokemon Adventures"
 
-        path = os.path.join("Mangas", "Pokemon Adventures", "vol.001 ch.001", "001.jpg")
-        original_image = Image.open(path)
-        re_sized = original_image.resize((800, 600), Image.ANTIALIAS)
-        img = ImageTk.PhotoImage(re_sized)
+        self.shown_series = Series(root_directory, comic_name)
+
+        img = self.shown_series.get_current_image()
         self.panel = Label(self.window_root, image=img)
         self.panel.image = img
+        self.panel.focus_set()
         self.panel.pack(side="bottom", fill="both", expand="yes")
 
-    @staticmethod
-    def greet():
-        print("Greetings!")
+        # self.show_image(img)
+        self.window_root.bind("<Left>", self.handle_left_key_event)
+        self.window_root.bind("<Right>", self.handle_right_key_event)
+
+    def show_image(self, img):
+        self.panel.configure(image=img)
+        self.panel.image = img
+        self.panel.focus_set()
+        self.panel.pack(side="bottom", fill="both", expand="yes")
+
+    def handle_left_key_event(self, _):
+        previous_page = self.shown_series.get_previous_page()
+        self.show_image(previous_page)
+
+    def handle_right_key_event(self, _):
+        next_page = self.shown_series.get_next_page()
+        self.show_image(next_page)
